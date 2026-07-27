@@ -1,13 +1,20 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/ChirayuMarathe/Social.git/internal/env"
+	"github.com/ChirayuMarathe/Social.git/internal/env/store"
+)
 
 func main() {
 	cfg := config{
-		addr: ":8080",
+		addr: env.GetString("ADDR", ":8080"),
 	}
+	store := store.NewStorage(nil)
 	app := &application{
 		config: cfg,
+		store:  store,
 	}
 	mux := app.mount()
 	log.Fatal(app.run(mux))
